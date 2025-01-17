@@ -173,8 +173,21 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 );
                               }
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Login failed: $e')),
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Login Gagal'),
+                                  content: Text(
+                                      'Password atau email yang Anda masukkan salah.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                           }
