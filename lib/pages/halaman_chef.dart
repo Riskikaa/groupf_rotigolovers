@@ -21,9 +21,7 @@ class RotigoloversChefState extends State<RotigoloversChef> {
   List data = [];
   List<RotigoloversModel> rotigolovers = [];
   List<bool> buttonStates = [];
-
   List<RotigoloversModel> search_data = [];
-  List<RotigoloversModel> search_data_pre = [];
 
   @override
   void initState() {
@@ -32,140 +30,65 @@ class RotigoloversChefState extends State<RotigoloversChef> {
   }
 
   Future<void> selectAllRotigolovers() async {
-    data =
-        jsonDecode(await ds.selectAll(Token, Project, 'rotigolovers', appid));
-    rotigolovers = data.map((e) => RotigoloversModel.fromJson(e)).toList();
-    buttonStates = List<bool>.filled(rotigolovers.length, false);
-    setState(() {});
+    try {
+      data =
+          jsonDecode(await ds.selectAll(Token, Project, 'rotigolovers', appid));
+      rotigolovers = data.map((e) => RotigoloversModel.fromJson(e)).toList();
+      buttonStates = List<bool>.filled(rotigolovers.length, false);
+      setState(() {});
+    } catch (e) {
+      showErrorSnackBar('Failed to load data: $e');
+    }
   }
 
   void filterRotigolovers(String enteredKeyword) {
-    if (enteredKeyword.isEmpty) {
-      search_data = data.map((e) => RotigoloversModel.fromJson(e)).toList();
-    } else {
-      search_data_pre = data.map((e) => RotigoloversModel.fromJson(e)).toList();
-      search_data = search_data_pre
-          .where((user) => user.nama_menu
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
     setState(() {
-      rotigolovers = search_data;
-      buttonStates = List<bool>.filled(rotigolovers.length, false);
+      search_data = enteredKeyword.isEmpty
+          ? rotigolovers
+          : rotigolovers
+              .where((item) => item.nama_menu
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()))
+              .toList();
     });
+  }
+
+  void showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         backgroundColor: Colors.brown,
-        actions: [
-          Stack(
-            alignment: Alignment.center,
-          ),
-        ],
-        flexibleSpace: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Text(
-                "Rotigolovers Store",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Coffe - Eatry - Breads - Cake",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.brown,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/logo.png'),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Rotigolovers Store',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    'Coffe - Eatry - Breads - Cake',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              "Rotigolovers Store",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.store, color: Colors.brown),
-              title: const Text('Kasir'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RotigoloversList(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.kitchen, color: Colors.brown),
-              title: const Text('Chef'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RotigoloversChef(),
-                  ),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Logout'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WelcomePage(),
-                  ),
-                );
-              },
+            Text(
+              "Coffe - Eatry - Breads - Cake",
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 15,
+              ),
             ),
           ],
         ),
       ),
+      drawer: buildDrawer(context),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -173,22 +96,117 @@ class RotigoloversChefState extends State<RotigoloversChef> {
             searchStatus ? searchField() : Container(),
             const SizedBox(height: 10),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Dua card per baris
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.8, // Rasio lebar dan tinggi card
-                ),
-                itemCount: rotigolovers.length,
-                itemBuilder: (context, index) {
-                  final item = rotigolovers[index];
-                  return buildOrderCard(item, index);
-                },
-              ),
+              child: rotigolovers.isEmpty
+                  ? buildEmptyState()
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemCount: rotigolovers.length,
+                      itemBuilder: (context, index) {
+                        final item = rotigolovers[index];
+                        return buildOrderCard(item, index);
+                      },
+                    ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(color: Colors.brown),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/logo.png'),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Rotigolovers Store',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Text(
+                  'Coffe - Eatry - Breads - Cake',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.store, color: Colors.brown),
+            title: const Text('Kasir'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RotigoloversList(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.kitchen, color: Colors.brown),
+            title: const Text('Chef'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RotigoloversChef(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Logout'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const WelcomePage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inbox, color: Colors.brown, size: 50),
+          const SizedBox(height: 10),
+          const Text(
+            'No orders found!',
+            style: TextStyle(fontSize: 18, color: Colors.brown),
+          ),
+        ],
       ),
     );
   }
@@ -248,8 +266,10 @@ class RotigoloversChefState extends State<RotigoloversChef> {
                   onPressed: () {
                     setState(() {
                       if (buttonStates[index]) {
-                        rotigolovers.removeAt(index);
-                        buttonStates.removeAt(index);
+                        if (index < rotigolovers.length) {
+                          rotigolovers.removeAt(index);
+                          buttonStates.removeAt(index);
+                        }
                       } else {
                         buttonStates[index] = true;
                       }
