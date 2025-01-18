@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:groupf_rotigolovers/pages/halaman_chef.dart';
 import 'package:intl/intl.dart';
-// import 'package:groupf_rotigolovers/pages/halaman_chef.dart';
 import 'package:groupf_rotigolovers/pages/halaman_keranjang.dart';
 import 'package:groupf_rotigolovers/utils/config.dart';
 import 'package:groupf_rotigolovers/utils/restapi.dart';
@@ -138,19 +138,19 @@ class RotigoloversListState extends State<RotigoloversList> {
           Stack(
             alignment: Alignment.center,
             children: [
-              // IconButton(
-              //   icon: const Icon(Icons.shopping_cart, color: Colors.white),
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => HalamanKeranjang(
-              //             cartItems:
-              //                 getCartItems()), // Pass the correct data here
-              //       ),
-              //     );
-              //   },
-              // ),
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HalamanKeranjang(
+                          cartItems:
+                              getCartItems()), // Pass the correct data here
+                    ),
+                  );
+                },
+              ),
               if (getCartItems().isNotEmpty)
                 Positioned(
                   right: 6,
@@ -221,18 +221,18 @@ class RotigoloversListState extends State<RotigoloversList> {
                 );
               },
             ),
-            // ListTile(
-            //   leading: const Icon(Icons.kitchen, color: Colors.brown),
-            //   title: const Text('Chef'),
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const RotigoloversChef(),
-            //       ),
-            //     );
-            //   },
-            // ),
+            ListTile(
+              leading: const Icon(Icons.kitchen, color: Colors.brown),
+              title: const Text('Chef'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RotigoloversChef(),
+                  ),
+                );
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
