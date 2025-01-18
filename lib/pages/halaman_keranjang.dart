@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupf_rotigolovers/pages/halaman_konfirmasi.dart';
 // import 'package:groupf_rotigolovers/pages/halaman_konfirmasi.dart';
 
 class HalamanKeranjang extends StatefulWidget {
@@ -50,14 +51,14 @@ class _HalamanKeranjangState extends State<HalamanKeranjang> {
     });
   }
 
-  // void confirmOrder() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => FormInput(cartItems: cartWithQuantities),
-  //     ),
-  //   );
-  // }
+  void confirmOrder() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FormInput(cartItems: cartWithQuantities),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,29 +188,29 @@ class _HalamanKeranjangState extends State<HalamanKeranjang> {
                     },
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(10.0),
-                //   child: ElevatedButton(
-                //     onPressed: confirmOrder,
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Colors.brown,
-                //       padding: const EdgeInsets.symmetric(
-                //           vertical: 15, horizontal: 40),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(8),
-                //       ),
-                //     ),
-                //     child: const Text(
-                //       'Konfirmasi Pesanan',
-                //       style: TextStyle(
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.bold,
-                //         color:
-                //             Colors.white, // Mengubah warna teks menjadi putih
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    onPressed: confirmOrder,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.brown,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Konfirmasi Pesanan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            Colors.white, // Mengubah warna teks menjadi putih
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
     );
