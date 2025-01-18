@@ -60,6 +60,14 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
         0.0;
   }
 
+  // Fungsi untuk menghitung total penjualan keseluruhan
+  double hitungTotalPenjualanKeseluruhan() {
+    return rotigolovers.fold(
+        0.0,
+        (total, item) =>
+            total + (double.tryParse(item.total_pembelian) ?? 0.0));
+  }
+
   void logout() {
     Navigator.pushReplacement(
       context,
@@ -73,18 +81,17 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
       appBar: AppBar(
         title: const Text(
           'Dashboard Laporan',
-          style: TextStyle(color: Colors.white), // Teks AppBar tetap putih
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.brown,
-        iconTheme:
-            const IconThemeData(color: Colors.white), // Ikon AppBar putih
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.brown, // Changed to teal for a more modern look
+                color: Colors.brown,
               ),
               child: const Text(
                 'Menu',
@@ -92,14 +99,10 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.add,
-                  color: Colors.brown), // Matching icon color
-              title: const Text(
-                'Menu',
-                style: TextStyle(color: Colors.brown),
-              ),
+              leading: const Icon(Icons.add, color: Colors.brown),
+              title: const Text('Menu', style: TextStyle(color: Colors.brown)),
               onTap: () {
-                Navigator.pop(context); // Close drawer
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ListMenu()),
@@ -107,23 +110,17 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.list,
-                  color: Colors.brown), // Matching icon color
-              title: const Text(
-                'Laporan',
-                style: TextStyle(color: Colors.brown),
-              ),
+              leading: const Icon(Icons.list, color: Colors.brown),
+              title:
+                  const Text('Laporan', style: TextStyle(color: Colors.brown)),
               onTap: () {
-                Navigator.pop(context); // Close drawer
+                Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.logout,
-                  color: Colors.brown), // Matching icon color
-              title: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.brown),
-              ),
+              leading: const Icon(Icons.logout, color: Colors.brown),
+              title:
+                  const Text('Logout', style: TextStyle(color: Colors.brown)),
               onTap: logout,
             ),
           ],
@@ -151,12 +148,18 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
               },
             ),
             const SizedBox(height: 20),
+            // Menampilkan Total Penjualan Keseluruhan
+            Text(
+              'Total Penjualan Keseluruhan: Rp ${hitungTotalPenjualanKeseluruhan().toStringAsFixed(0)}',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
             if (laporanPerTanggal[_selectedDay.toString().split(' ')[0]] !=
                 null)
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 1, // Tampilkan hanya 1 card per tanggal
+                itemCount: 1,
                 itemBuilder: (context, index) {
                   String selectedDate = _selectedDay.toString().split(' ')[0];
 
@@ -169,7 +172,6 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
                       'Total: Rp ${hitungTotalPemasukan(selectedDate).toStringAsFixed(0)}',
                     ),
                     onTap: () {
-                      // Tampilkan detail laporan hanya untuk tanggal yang dipilih
                       Navigator.push(
                         context,
                         MaterialPageRoute(
