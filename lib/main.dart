@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:groupf_rotigolovers/firebase_options.dart';
@@ -12,12 +14,22 @@ import '../pages/halaman_chef.dart';
 import '../pages/form_add_menu.dart';
 import '../pages/halaman_detail_penjualan.dart';
 
-void main() async {
+Future<void> main() async {
+  // Memastikan binding Flutter sudah diinisialisasi
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inisialisasi Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  // Menjalankan aplikasi dengan DevicePreview jika bukan mode rilis (release)
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode, // Aktifkan DevicePreview di luar mode rilis
+      builder: (context) => const MyApp(), // Gantikan dengan widget utama Anda
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
