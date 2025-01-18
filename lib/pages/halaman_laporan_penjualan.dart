@@ -77,8 +77,7 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
 
   // Fungsi untuk formatkan uang dalam format 'Rp'
   String formatCurrency(double amount) {
-    final currency =
-        'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), r'$1.')},-';
+    final currency = 'Rp ${amount.toStringAsFixed(0)}';
     return currency;
   }
 
