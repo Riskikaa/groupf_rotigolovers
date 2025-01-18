@@ -86,6 +86,13 @@ class ListMenuState extends State<ListMenu> {
     filterMenu(searchKeyword.text);
   }
 
+  void logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => WelcomePage()),
+    );
+  }
+
   // Method for deleting menu item
   void deleteMenuItem(int index) async {
     // Optionally confirm before deleting
@@ -181,6 +188,46 @@ class ListMenuState extends State<ListMenu> {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.brown,
+              ),
+              child: const Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.add, color: Colors.brown),
+              title: const Text('Menu', style: TextStyle(color: Colors.brown)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ListMenu()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.list, color: Colors.brown),
+              title:
+                  const Text('Laporan', style: TextStyle(color: Colors.brown)),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.brown),
+              title:
+                  const Text('Logout', style: TextStyle(color: Colors.brown)),
+              onTap: logout,
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
