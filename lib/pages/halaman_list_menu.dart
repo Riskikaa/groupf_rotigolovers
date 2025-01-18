@@ -309,14 +309,6 @@ class ListMenuState extends State<ListMenu> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Checkbox(
-                        value: isOrderedMap[index] ?? false,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isOrderedMap[index] = value ?? false;
-                          });
-                        },
-                      ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
