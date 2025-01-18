@@ -75,6 +75,13 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
     );
   }
 
+  // Fungsi untuk formatkan uang dalam format 'Rp'
+  String formatCurrency(double amount) {
+    final currency =
+        'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), r'$1.')},-';
+    return currency;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +157,7 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
             const SizedBox(height: 20),
             // Menampilkan Total Penjualan Keseluruhan
             Text(
-              'Total Penjualan Keseluruhan: Rp ${hitungTotalPenjualanKeseluruhan().toStringAsFixed(0)}',
+              'Total Penjualan Keseluruhan: ${formatCurrency(hitungTotalPenjualanKeseluruhan())}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -169,7 +176,7 @@ class RotigoloversLaporanState extends State<RotigoloversLaporan> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                      'Total: Rp ${hitungTotalPemasukan(selectedDate).toStringAsFixed(0)}',
+                      'Total: ${formatCurrency(hitungTotalPemasukan(selectedDate))}',
                     ),
                     onTap: () {
                       Navigator.push(
